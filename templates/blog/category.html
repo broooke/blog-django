@@ -1,0 +1,51 @@
+{% extends 'extends/index.html' %}
+{% load static %}
+{% block content %}
+<section class="site-section">
+      <div class="container">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h2 class="mb-4">Категория: {{category.name}}</h2>
+          </div>
+        </div>
+        <div class="row blog-entries">
+          <div class="col-md-12 col-lg-8 main-content">
+            <div class="row mb-5 mt-5">
+
+              <div class="col-md-12">
+                {% for obj in object_list %}
+                <div class="post-entry-horzontal">
+                  <a href="#">
+                    <div class="image element-animate" data-animate-effect="fadeIn" style="background-image: url({{obj.picture.url}});"></div>
+                    <span class="text">
+                      <div class="post-meta">
+                        {% for tag in obj.tags.all  %}
+                        <span class="category">{{tag.name}}</span>
+                        {% endfor %}
+                        <span class="mr-2">{{obj.date}} </span> &bullet;
+                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                      </div>
+                      <h2>{{obj.headline}}</h2>
+                    </span>
+                  </a>
+                </div>
+                {% endfor %}
+                <!-- END post -->
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <nav aria-label="Page navigation" class="text-center">
+                  <ul class="pagination">
+                    <li class="page-item  active"><a class="page-link" href="#">Prev</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+          {% endblock %}

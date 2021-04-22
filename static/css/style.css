@@ -1618,7 +1618,7 @@ textarea.form-control {
   position: relative;
 }
 
-.search-form .form-group #s {
+.search-form .form-group #s #ss {
   padding-right: 50px;
   background: #f7f7f7;
   padding: 15px 15px;

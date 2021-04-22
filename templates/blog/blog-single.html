@@ -1,0 +1,119 @@
+{% extends 'extends/index.html' %}
+{% load static %}
+{% block content %}
+<section class="site-section py-lg">
+      <div class="container">
+
+        <div class="row blog-entries">
+          <div class="col-md-12 col-lg-8 main-content">
+            <h1 class="mb-4">{{object.headline}}</h1>
+            <div class="post-meta">
+                        {% for tag in object.tags.all %}
+                        <span class="category">{{tag.name}}</span>
+                        {% endfor %}
+                        <span class="mr-2">{{object.date}} </span> &bullet;
+                        <span class="ml-2"><span class="fa fa-comments"></span> {{obj.article_comments.all|length}}</span>
+                      </div>
+            <div class="post-content-body">
+              {{object.text | safe | linebreaks}}
+            </div>
+
+
+            <div class="pt-5 d-flex">
+              <p>Категория:  <a href="#">{{object.category}}</a>   Теги:{% for tag in object.tags.all %}
+                <a href="#">{{tag.name}}</a>,  </p>
+              {% endfor %}
+            </div>
+            <hr>
+
+            <div id="comments" class="pt-5">
+              <h3 class="mb-5">6 Comments</h3>
+              <ul class="comment-list">
+                {% for comment in object.get_comments %}
+                <li class="comment">
+                  <div class="vcard">
+                    <img src="{% static 'media/customers/me.jpg' %}" alt="Image placeholder">
+                  </div>
+                  <div class="comment-body">
+                    <h3>{{comment.customer.username}}</h3>
+                    <div class="meta">{{comment.date}}</div>
+                    <p>{{comment.text}}</p>
+                    <p><a href="#formReview" onclick="addReview('{{comment.customer.username}}', '{{comment.id}}')" class="reply">Ответить</a></p>
+                  </div>
+
+                  {% for com in comment.self_comments.all %}
+                  <ul class="children">
+                    <li class="comment border-left pl-5">
+                      <div class="vcard">
+                        <img src="{% static 'media/customers/me.jpg' %}" alt="Image placeholder">
+                      </div>
+                      <div class="comment-body">
+                        <h3>{{com.customer.username}}</h3>
+                        <div class="meta">{{com.date}}</div>
+                        <p>{{com.text}}</p>
+                        <p><a href="#formReview" onclick="addReview('{{com.customer.username}}', '{{com.id}}')" class="reply">Ответить</a></p>
+                      </div>
+                    </li>
+                    {% for com1 in com.self_comments.all %}
+                    <ul class="children">
+                      <li class="comment border-left pl-5">
+                        <div class="vcard">
+                          <img src="{% static 'media/customers/me.jpg' %}" alt="Image placeholder">
+                        </div>
+                        <div class="comment-body">
+                          <h3>{{com1.customer.username}}</h3>
+                          <div class="meta">{{com1.date}}</div>
+                          <p>{{com1.text}}</p>
+                          <p><a href="#formReview" onclick="addReview('{{com1.customer.username}}', '{{com1.id}}')" class="reply">Ответить</a></p>
+                        </div>
+                      </li>
+                      {% for com2 in com1.self_comments.all %}
+                      <ul class="children">
+                      <li class="comment border-left pl-5">
+                        <div class="vcard">
+                          <img src="{% static 'media/customers/me.jpg' %}" alt="Image placeholder">
+                        </div>
+                        <div class="comment-body">
+                          <h3>{{com2.customer.username}}</h3>
+                          <div class="meta">{{com2.date}}</div>
+                          <p>{{com2.text}}</p>
+                          <p><a href="#formReview" onclick="addReview('{{com2.customer.username}}', '{{com2.id}}')" class="reply">Ответить</a></p>
+                        </div>
+                      </li>
+                        </ul>
+                      {% endfor %}
+                    </ul>
+                    {%endfor%}
+                  </ul>
+                  {% endfor %}
+                </li>
+                {% endfor %}
+              </ul>
+              <!-- END comment-list -->
+
+              <div class="comment-form-wrap pt-5">
+                <hr>
+                <h3 class="mb-5">Оставить комментарий</h3>
+                <form id="formReview" method="post" class="p-5 bg-light">
+                  {% csrf_token %}
+                  <input type="hidden" name="parent" id="contactparent" value="">
+                  <div class="form-group">
+                    <label for="text">Сообщение</label>
+                    <textarea name="text" id="text" cols="30" rows="10" class="form-control"></textarea>
+                  </div>
+                  {% if messages %}
+                <br>
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li role="alert" class="alert alert-warning">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                  <div class="form-group">
+                    <input type="submit" value="Опубликовать" class="btn btn-primary">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          {% endblock%}

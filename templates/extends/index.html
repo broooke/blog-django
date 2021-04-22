@@ -2,7 +2,7 @@
 {% load static %}
 <html lang="en">
   <head>
-    <title>alita &mdash; Minimal Blog Template</title>
+    <title>Блог &mdash; айти</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -35,7 +35,7 @@
               <!-- <a href="#"><span class="fa fa-search"></span></a> -->
               <form action="#" class="search-top-form">
                 <span class="icon fa fa-search"></span>
-                <input type="text" id="s" placeholder="Type keyword to search...">
+                <input type="text" id="s" placeholder="Введите текст для поиска...">
               </form>
             </div>
           </div>
@@ -46,7 +46,7 @@
         <div class="row pt-5">
           <div class="col-12 text-center">
             <a class="absolute-toggle d-block d-md-none" data-toggle="collapse" href="#navbarMenu" role="button" aria-expanded="false" aria-controls="navbarMenu"><span class="burger-lines"></span></a>
-            <h1 class="site-logo"><a href="index.html">Balita</a></h1>
+            <h1 class="site-logo"><a href="{% url 'home' %}">Digital Ocean</a></h1>
           </div>
         </div>
       </div>
@@ -56,253 +56,45 @@
           
          
           <div class="collapse navbar-collapse" id="navbarMenu">
+            {% with url_name=request.resolver_match.url_name %}
             <ul class="navbar-nav mx-auto">
               <li class="nav-item">
-                <a class="nav-link active" href="index.html">Home</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="category.html" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Travel</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown04">
-                  <a class="dropdown-item" href="category.html">Asia</a>
-                  <a class="dropdown-item" href="category.html">Europe</a>
-                  <a class="dropdown-item" href="category.html">Dubai</a>
-                  <a class="dropdown-item" href="category.html">Africa</a>
-                  <a class="dropdown-item" href="category.html">South America</a>
-                </div>
-
+                <a class="nav-link {% if url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Главная</a>
               </li>
 
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="category.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
+                <a class="nav-link dropdown-toggle {% if url_name == 'articles-category' %}active{% endif %}" href="category.html" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Категории</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown05">
-                  <a class="dropdown-item" href="category.html">Lifestyle</a>
-                  <a class="dropdown-item" href="category.html">Food</a>
-                  <a class="dropdown-item" href="category.html">Adventure</a>
-                  <a class="dropdown-item" href="category.html">Travel</a>
-                  <a class="dropdown-item" href="category.html">Business</a>
+                  {% for category in categories %}
+                  <a class="dropdown-item" href="{% url 'articles-category' category.url %}">{{category.name}}</a>
+                  {% endfor %}
                 </div>
-
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
+                <a class="nav-link" href="about.html">Услуги</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact</a>
+                <a class="nav-link" href="contact.html">Связь</a>
               </li>
             </ul>
+            {% endwith%}
             
           </div>
         </div>
       </nav>
     </header>
     <!-- END header -->
+    {% block content %}
 
-    <section class="site-section pt-5">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-
-            <div class="owl-carousel owl-theme home-slider">
-              <div>
-                <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image: url('images/img_1.jpg'); ">
-                  <div class="text half-to-full">
-                    <div class="post-meta">
-                      <span class="category">Lifestyle</span>
-                      <span class="mr-2">March 15, 2018 </span> &bullet;
-                      <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                    </div>
-                    <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
-                  </div>
-                </a>
-              </div>
-              <div>
-                <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image: url('images/img_2.jpg'); ">
-                  <div class="text half-to-full">
-                    <div class="post-meta">
-                      <span class="category">Lifestyle</span>
-                      <span class="mr-2">March 15, 2018 </span> &bullet;
-                      <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                    </div>
-                    <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
-                  </div>
-                </a>
-              </div>
-              <div>
-                <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image: url('images/img_3.jpg'); ">
-                  <div class="text half-to-full">
-                    <div class="post-meta">
-                      <span class="category">Lifestyle</span>
-                      <span class="mr-2">March 15, 2018 </span> &bullet;
-                      <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                    </div>
-                    <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 col-lg-4">
-            <a href="blog-single.html" class="a-block d-flex align-items-center height-md" style="background-image: url('images/img_2.jpg'); ">
-              <div class="text">
-                <div class="post-meta">
-                  <span class="category">Lifestyle</span>
-                  <span class="mr-2">March 15, 2018 </span> &bullet;
-                  <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                </div>
-                <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-              </div>
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a href="blog-single.html" class="a-block d-flex align-items-center height-md" style="background-image: url('images/img_3.jpg'); ">
-              <div class="text">
-                <div class="post-meta">
-                  <span class="category">Travel</span>
-                  <span class="mr-2">March 15, 2018 </span> &bullet;
-                  <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                </div>
-                <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-              </div>
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a href="blog-single.html" class="a-block d-flex align-items-center height-md" style="background-image: url('images/img_4.jpg'); ">
-              <div class="text">
-                <div class="post-meta">
-                  <span class="category">Food</span>
-                  <span class="mr-2">March 15, 2018 </span> &bullet;
-                  <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                </div>
-                <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-
-
-    </section>
-    <!-- END section -->
-
-    <section class="site-section py-sm">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <h2 class="mb-4">Последние статьи</h2>
-          </div>
-        </div>
-        <div class="row blog-entries">
-          <div class="col-md-12 col-lg-8 main-content">
-            <div class="row">
-              {% for obj in object_list %}
-              <div class="col-md-6">
-                <a href="{% url 'detail-article' obj.url %}" class="blog-entry element-animate" data-animate-effect="fadeIn">
-                  <img src="{{obj.picture.url}}" alt="Image placeholder">
-                  <div class="blog-content-body">
-                    <div class="post-meta">
-                      {% for tag in obj.tags.all %}
-                      <span class="category">{{tag.name}}</span>
-                      {% endfor %}
-                      <br>
-                      <span class="mr-2">{{obj.date}} </span> &bullet;
-                      <span class="ml-2"><span class="fa fa-comments"></span> {{obj.article_comments.all|length}}</span>
-                    </div>
-                    <h2>{{obj.headline}}</h2>
-                  </div>
-                </a>
-              </div>
-              {% endfor %}
-            </div>
-
-            <div class="row">
-              <div class="col-md-12 text-center">
-                <nav aria-label="Page navigation" class="text-center">
-                  <ul class="pagination">
-                    <li class="page-item  active"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-
-
-            <div class="row mb-5 mt-5">
-
-              <div class="col-md-12">
-                <h2 class="mb-4">More Blog Posts</h2>
-              </div>
-        
-              <div class="col-md-12">
-
-                <div class="post-entry-horzontal">
-                  <a href="blog-single.html">
-                    <div class="image element-animate"  data-animate-effect="fadeIn" style="background-image: url(images/img_10.jpg);"></div>
-                    <span class="text">
-                      <div class="post-meta">
-                        <span class="category">Travel</span>
-                        <span class="mr-2">March 15, 2018 </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                      </div>
-                      <h2>There’s a Cool New Way for Men to Wear Socks and Sandals</h2>
-                    </span>
-                  </a>
-                </div>
-                <!-- END post -->
-
-                <div class="post-entry-horzontal">
-                  <a href="blog-single.html">
-                    <div class="image element-animate"  data-animate-effect="fadeIn" style="background-image: url(images/img_11.jpg);"></div>
-                    <span class="text">
-                      <div class="post-meta">
-                        <span class="category">Lifestyle</span>
-                        <span class="mr-2">March 15, 2018 </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                      </div>
-                      <h2>There’s a Cool New Way for Men to Wear Socks and Sandals</h2>
-                    </span>
-                  </a>
-                </div>
-                <!-- END post -->
-
-                <div class="post-entry-horzontal">
-                  <a href="blog-single.html">
-                    <div class="image element-animate"  data-animate-effect="fadeIn" style="background-image: url(images/img_12.jpg);"></div>
-                    <span class="text">
-                      <div class="post-meta">
-                        <span class="category">Food</span>
-                        <span class="mr-2">March 15, 2018 </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                      </div>
-                      <h2>There’s a Cool New Way for Men to Wear Socks and Sandals</h2>
-                    </span>
-                  </a>
-                </div>
-                <!-- END post -->
-
-              </div>
-            </div>
-
-            
-
-          </div>
 
           <!-- END main-content -->
-
+          {% endblock %}
           <div class="col-md-12 col-lg-4 sidebar">
             <div class="sidebar-box search-form-wrap">
               <form action="#" class="search-form">
                 <div class="form-group">
                   <span class="icon fa fa-search"></span>
-                  <input type="text" class="form-control" id="s" placeholder="Type a keyword and hit enter">
+                  <input style="padding-right: 50px;background: #f7f7f7;padding: 15px 15px;border: none;" type="text" class="form-control" id="ss" placeholder="Type a keyword and hit enter">
                 </div>
               </form>
             </div>
@@ -325,7 +117,7 @@
             </div>
             <!-- END sidebar-box -->  
             <div class="sidebar-box">
-              <h3 class="heading">Popular Posts</h3>
+              <h3 class="heading">Популярные статьи</h3>
               <div class="post-entry-sidebar">
                 <ul>
                   {% for article in popular_articles %}
@@ -350,7 +142,7 @@
             <!-- END sidebar-box -->
 
             <div class="sidebar-box">
-              <h3 class="heading">Categories</h3>
+              <h3 class="heading">Категории</h3>
               <ul class="categories">
                 {% for category in categories %}
                 <li><a href="#">{{category.name}} <span>{{category.category_articles.all|length}}</span></a></li>
@@ -360,7 +152,7 @@
             <!-- END sidebar-box -->
 
             <div class="sidebar-box">
-              <h3 class="heading">Tags</h3>
+              <h3 class="heading">Теги</h3>
               <ul class="tags">
                 {% for tag in tags %}
                 <li><a href="#">{{tag.name}}</a></li>
@@ -369,11 +161,9 @@
             </div>
           </div>
           <!-- END sidebar -->
-
         </div>
       </div>
     </section>
-  
     <footer class="site-footer">
       <div class="container">
         <div class="row mb-5">
