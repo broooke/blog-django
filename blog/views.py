@@ -1,8 +1,14 @@
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.utils.html import strip_tags
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, FormView
 from django.contrib import messages
+from django.views.generic.base import View
+
 from blog.forms import addCommentForm
 from blog.models import *
 
@@ -10,12 +16,14 @@ from blog.models import *
 class ArticlesHomeView(ListView):
     template_name = 'blog/main.html'
     model = Article
+    paginate_by = 2
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         context['tags'] = Tag.objects.all()
-        context['popular_articles'] = self.get_queryset().order_by('-views')
+        context['popular_articles'] = self.get_queryset().order_by('-views')[:5]
+        context['latest_articles'] = self.get_queryset()[:3]
         return context
 
 
@@ -60,7 +68,42 @@ class CategoryArcticlesView(ListView):
         return context
 
 
+class ContactView(TemplateView):
+    template_name = 'blog/contact.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['tags'] = Tag.objects.all()
+        context['popular_articles'] = Article.objects.all().order_by('-views')
+        return context
+
+    def post(self, request):
+        try:
+            template = render_to_string('extends/email_dict.html', {
+                'name': self.request.POST.get('name'),
+                'headline': self.request.POST.get('phone'),
+                'email': self.request.POST.get('email'),
+                'message': self.request.POST.get('message'),
+            })
+
+            text_content = strip_tags(template)
+
+            email = EmailMultiAlternatives(
+                self.request.POST.get('phone'),
+                text_content,
+                settings.EMAIL_HOST_USER,
+                [settings.EMAIL_HOST_USER]
+            )
+
+            email.attach_alternative(template, "text/html")
+            email.send()
+            messages.add_message(self.request, messages.SUCCESS, 'Сообщение отправлено!')
+        except:
+            messages.add_message(self.request, messages.ERROR, 'Возникла ошибка, попробуйте позже')
+
+        return redirect('contact')
 
 
-
-
+class ServicesView(TemplateView):
+    template_name = 'blog/services.html'

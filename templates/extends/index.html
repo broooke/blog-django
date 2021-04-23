@@ -35,7 +35,7 @@
               <!-- <a href="#"><span class="fa fa-search"></span></a> -->
               <form action="#" class="search-top-form">
                 <span class="icon fa fa-search"></span>
-                <input type="text" id="s" placeholder="Введите текст для поиска...">
+                <input type="text" id="s" placeholder="Поиск статьи...">
               </form>
             </div>
           </div>
@@ -71,10 +71,10 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="about.html">Услуги</a>
+                <a class="nav-link" href="{% url 'services' %}">Услуги</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="contact.html">Связь</a>
+                <a class="nav-link {% if url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Связь</a>
               </li>
             </ul>
             {% endwith%}
@@ -94,7 +94,7 @@
               <form action="#" class="search-form">
                 <div class="form-group">
                   <span class="icon fa fa-search"></span>
-                  <input style="padding-right: 50px;background: #f7f7f7;padding: 15px 15px;border: none;" type="text" class="form-control" id="ss" placeholder="Type a keyword and hit enter">
+                  <input style="padding-right: 50px;background: #f7f7f7;padding: 15px 15px;border: none;" type="text" class="form-control" id="ss" placeholder="Поиск статьи...">
                 </div>
               </form>
             </div>
@@ -168,55 +168,32 @@
       <div class="container">
         <div class="row mb-5">
           <div class="col-md-4">
-            <h3>Paragraph</h3>
-            <p>
-              <img src="images/img_1.jpg" alt="Image placeholder" class="img-fluid">
-            </p>
+            <h3>О САЙТЕ</h3>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, accusantium optio unde perferendis eum illum voluptatibus dolore tempora, consequatur minus asperiores temporibus reprehenderit.</p>
+            <p>Наш сайт посвящен IT-индустрии. У нас вы сможете найти различные статьи на самые различные темы IT. Так как мы запустили сайт недавно, то вы можете участвовать в его развитии и продвижении. Для этого, вы можете связаться с нами по этой
+              <a href="{% url 'contact' %}">ссылке</a> и предложить свою помощью в развитии сайта. Также, вы можете поучаствовать в разработке будущих проектов, для этого также свяжитесть с нами по этой <a href="{% url 'contact' %}">ссылке</a>.</p>
           </div>
           <div class="col-md-6 ml-auto">
             <div class="row">
               <div class="col-md-7">
-                <h3>Latest Post</h3>
+                <h3>Последнии статьи</h3>
                 <div class="post-entry-sidebar">
                   <ul>
+                    {% for art in latest_articles %}
                     <li>
                       <a href="">
-                        <img src="images/img_6.jpg" alt="Image placeholder" class="mr-4">
+                        <img src="{{art.picture.url}}" alt="Image placeholder" class="mr-4">
                         <div class="text">
-                          <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
+                          <h4>{{art.headline}}</h4>
                           <div class="post-meta">
-                            <span class="mr-2">March 15, 2018 </span> &bullet;
-                            <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                            <span class="mr-2">{{art.date}}</span> &bullet;
+                            <br>
+                            <span class="ml-2"><span class="fa fa-comments"></span> {{art.article_comments.all|length}}</span>
                           </div>
                         </div>
                       </a>
                     </li>
-                    <li>
-                      <a href="">
-                        <img src="images/img_3.jpg" alt="Image placeholder" class="mr-4">
-                        <div class="text">
-                          <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                          <div class="post-meta">
-                            <span class="mr-2">March 15, 2018 </span> &bullet;
-                            <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="">
-                        <img src="images/img_4.jpg" alt="Image placeholder" class="mr-4">
-                        <div class="text">
-                          <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                          <div class="post-meta">
-                            <span class="mr-2">March 15, 2018 </span> &bullet;
-                            <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
+                    {% endfor %}
                   </ul>
                 </div>
               </div>
@@ -225,13 +202,12 @@
               <div class="col-md-4">
 
                 <div class="mb-5">
-                  <h3>Quick Links</h3>
+                  <h3>Быстрые ссылки</h3>
                   <ul class="list-unstyled">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Travel</a></li>
-                    <li><a href="#">Adventure</a></li>
-                    <li><a href="#">Courses</a></li>
-                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#">Категории</a></li>
+                    <li><a href="#">Услуги</a></li>
+                    <li><a href="#">Связи</a></li>
                   </ul>
                 </div>
                 
@@ -253,7 +229,7 @@
         <div class="row">
           <div class="col-md-12">
             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
           </div>
         </div>
