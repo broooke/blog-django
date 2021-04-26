@@ -1,91 +1,59 @@
 {% extends 'extends/index.html' %}
 {% load static%}
 {% block content%}
+<style>
+.heading {
+    font-size: 18px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e6e6e6;
+}
+</style>
 <section class="site-section pt-5">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-
             <div class="owl-carousel owl-theme home-slider">
+              {% for art in most_views_comments %}
               <div>
-                <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image: url('images/img_1.jpg'); ">
+                <a href="{% url 'detail-article' art.url %}" class="a-block d-flex align-items-center height-lg" style="background-image: url({{art.picture.url}}); ">
                   <div class="text half-to-full">
                     <div class="post-meta">
-                      <span class="category">Lifestyle</span>
-                      <span class="mr-2">March 15, 2018 </span> &bullet;
-                      <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                      {% for tag in art.tags.all %}
+                      <span class="category">{{tag.name}}</span>
+                      {% endfor %}
+                      <br>
+                      <span class="mr-2">{{art.date}} </span> &bullet;
+                      <span class="ml-2"><span class="fa fa-comments"></span> {{art.article_comments.all|length}}</span> &bullet;
+                      <span class="mr-2"><span class="fa fa-eye"></span> {{art.views}}</span>
                     </div>
-                    <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
+                    <h3>{{art.headline}}</h3>
                   </div>
                 </a>
               </div>
-              <div>
-                <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image: url('images/img_2.jpg'); ">
-                  <div class="text half-to-full">
-                    <div class="post-meta">
-                      <span class="category">Lifestyle</span>
-                      <span class="mr-2">March 15, 2018 </span> &bullet;
-                      <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                    </div>
-                    <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
-                  </div>
-                </a>
-              </div>
-              <div>
-                <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image: url('images/img_3.jpg'); ">
-                  <div class="text half-to-full">
-                    <div class="post-meta">
-                      <span class="category">Lifestyle</span>
-                      <span class="mr-2">March 15, 2018 </span> &bullet;
-                      <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                    </div>
-                    <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
-                  </div>
-                </a>
-              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
+        <h3 class="heading">Самые обсуждаемые статьи</h3>
         <div class="row">
+          {% for art in most_comments %}
           <div class="col-md-6 col-lg-4">
-            <a href="blog-single.html" class="a-block d-flex align-items-center height-md" style="background-image: url('images/img_2.jpg'); ">
+            <a href="blog-single.html" class="a-block d-flex align-items-center height-md" style="background-image: url({{art.picture.url}}); ">
               <div class="text">
                 <div class="post-meta">
-                  <span class="category">Lifestyle</span>
-                  <span class="mr-2">March 15, 2018 </span> &bullet;
-                  <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                  {% for tag in art.tags.all %}
+                  <span class="category">{{tag.name}}</span>
+                  {% endfor %}
+                  <span class="mr-2">{{art.date}} </span> &bullet;
+                  <span class="ml-2"><span class="fa fa-comments"></span> {{art.article_comments.all|length}}</span> &bullet;
+                  <span class="mr-2"><span class="fa fa-eye"></span> {{art.views}}</span>
                 </div>
-                <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
+                <h3>{{art.headline}}</h3>
               </div>
             </a>
           </div>
-          <div class="col-md-6 col-lg-4">
-            <a href="blog-single.html" class="a-block d-flex align-items-center height-md" style="background-image: url('images/img_3.jpg'); ">
-              <div class="text">
-                <div class="post-meta">
-                  <span class="category">Travel</span>
-                  <span class="mr-2">March 15, 2018 </span> &bullet;
-                  <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                </div>
-                <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-              </div>
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a href="blog-single.html" class="a-block d-flex align-items-center height-md" style="background-image: url('images/img_4.jpg'); ">
-              <div class="text">
-                <div class="post-meta">
-                  <span class="category">Food</span>
-                  <span class="mr-2">March 15, 2018 </span> &bullet;
-                  <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                </div>
-                <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-              </div>
-            </a>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </section>
@@ -97,7 +65,7 @@
           <div class="col-md-12 col-lg-8 main-content">
             <div class="row mb-5 mt-5">
               <div class="col-md-12">
-                <h2 class="mb-4">Последние статьи</h2>
+                <h3 class="mb-4 heading">Последние статьи</h3>
               </div>
 
               <div class="col-md-12">

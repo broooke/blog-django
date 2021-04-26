@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
+from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -23,7 +24,9 @@ class ArticlesHomeView(ListView):
         context['categories'] = Category.objects.all()
         context['tags'] = Tag.objects.all()
         context['popular_articles'] = self.get_queryset().order_by('-views')[:5]
-        context['latest_articles'] = self.get_queryset()[:3]
+        context['latest_articles'] = self.get_queryset().annotate(num_comments=Count('article_comments')).order_by('-num_comments', '-views')[:4]
+        context['most_comments'] = self.get_queryset().annotate(num_comments=Count('article_comments')).order_by('-num_comments')[:3]
+        context['most_views_comments'] = self.get_queryset().annotate(num_comments=Count('article_comments')).order_by('-num_comments', '-views')[:10]
         return context
 
 
@@ -60,11 +63,11 @@ class CategoryArcticlesView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['object_list'] = self.get_queryset().filter(category=Category.objects.get(url=self.kwargs['name']))
         context['categories'] = Category.objects.all()
         context['tags'] = Tag.objects.all()
         context['popular_articles'] = self.get_queryset().order_by('-views')
         context['category'] = Category.objects.get(url=self.kwargs['name'])
-        context['object_list'] = self.get_queryset().filter(category=Category.objects.get(url=self.kwargs['name']))
         return context
 
 

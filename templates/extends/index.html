@@ -91,10 +91,11 @@
           {% endblock %}
           <div class="col-md-12 col-lg-4 sidebar">
             <div class="sidebar-box search-form-wrap">
-              <form action="#" class="search-form">
-                <div class="form-group">
-                  <span class="icon fa fa-search"></span>
-                  <input style="padding-right: 50px;background: #f7f7f7;padding: 15px 15px;border: none;" type="text" class="form-control" id="ss" placeholder="Поиск статьи...">
+              <form method="get" action="#" class="search-form">
+                <div class="input-group">
+                  <input style="padding-right: 50px;background: #f7f7f7;padding: 15px 15px;border: none;" type="text" class="form-control" id="ss" name="q" placeholder="Поиск статьи...">
+                  <button type="submit">
+                  </button>
                 </div>
               </form>
             </div>
@@ -117,7 +118,7 @@
             </div>
             <!-- END sidebar-box -->  
             <div class="sidebar-box">
-              <h3 class="heading">Популярные статьи</h3>
+              <h3 class="heading">Сейчас читают</h3>
               <div class="post-entry-sidebar">
                 <ul>
                   {% for article in popular_articles %}
@@ -176,7 +177,7 @@
           <div class="col-md-6 ml-auto">
             <div class="row">
               <div class="col-md-7">
-                <h3>Последнии статьи</h3>
+                <h3>Популярные статьи</h3>
                 <div class="post-entry-sidebar">
                   <ul>
                     {% for art in latest_articles %}
@@ -210,7 +211,7 @@
                     <li><a href="#">Связи</a></li>
                   </ul>
                 </div>
-                
+
                 <div class="mb-5">
                   <h3>Social</h3>
                   <ul class="list-unstyled footer-social">
