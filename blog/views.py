@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from django.db.models import Count
+from django.db.models import Count, F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -12,6 +12,7 @@ from django.views.generic.base import View
 
 from blog.forms import addCommentForm
 from blog.models import *
+from blog.tasks import mailing
 
 
 class ArticlesHomeView(ListView):
@@ -26,7 +27,7 @@ class ArticlesHomeView(ListView):
         context['popular_articles'] = self.get_queryset().order_by('-views')[:5]
         context['latest_articles'] = self.get_queryset().annotate(num_comments=Count('article_comments')).order_by('-num_comments', '-views')[:4]
         context['most_comments'] = self.get_queryset().annotate(num_comments=Count('article_comments')).order_by('-num_comments')[:3]
-        context['most_views_comments'] = self.get_queryset().annotate(num_comments=Count('article_comments')).order_by('-num_comments', '-views')[:10]
+        context['most_views_comments'] = self.get_queryset().annotate(num_comments=Count('article_comments')).order_by('-num_comments', '-views')[:6]
         return context
 
 
@@ -110,3 +111,30 @@ class ContactView(TemplateView):
 
 class ServicesView(TemplateView):
     template_name = 'blog/services.html'
+
+
+class SearchArticlesView(TemplateView):
+    template_name = 'blog/search_articles.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_list'] = self.kwargs['articles']
+        context['q'] = self.kwargs['q']
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.kwargs['articles'] = Article.objects.filter(headline__icontains=self.request.GET['q'])
+        self.kwargs['q'] = self.request.GET['q']
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+
+class MailingView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            Mailing.objects.create(email=self.request.POST['email_sub'])
+            messages.add_message(self.request, messages.SUCCESS, 'Вы подписались на рассылку')
+        except:
+            messages.add_message(self.request, messages.ERROR, 'Возникла ошибка, попробуйте позже')
+        mailing()
+        return redirect('home')

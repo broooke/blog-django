@@ -1,29 +1,46 @@
 {% extends 'extends/index.html' %}
 {% load static %}
 {% block content %}
+<style>
+.heading {
+    font-size: 18px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e6e6e6;
+}
+</style>
+
 <section class="site-section">
       <div class="container">
-        <div class="row mb-4">
-          <div class="col-md-6">
-            <h2 class="mb-4">Категория: {{category.name}}</h2>
+        <div style="width: 100%;" class="row mb-4">
+          <div style="width: 100%;" class="col-md-6">
+            <h2 class="mb-4 heading">Вы ищите: "{{q}}"</h2>
           </div>
         </div>
         <div class="row blog-entries">
           <div class="col-md-12 col-lg-8 main-content">
-            <div class="row mb-5 mt-5">
+            <div class="row mb-5">
 
               <div class="col-md-12">
+
+                {% if object_list|length == 0 %}
+                <div class="alert alert-warning" role="alert">
+                 Не соотвествующих статьей
+                </div>
+                {% endif %}
                 {% for obj in object_list %}
                 <div class="post-entry-horzontal">
-                  <a href="{% url 'detail-article' obj.url %}">
+                  <a style="width: 100%;" href="{% url 'detail-article' obj.url %}">
                     <div class="image element-animate" data-animate-effect="fadeIn" style="background-image: url({{obj.picture.url}});"></div>
                     <span class="text">
                       <div class="post-meta">
                         {% for tag in obj.tags.all  %}
                         <span class="category">{{tag.name}}</span>
                         {% endfor %}
+                        <br>
                         <span class="mr-2">{{obj.date}} </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                        <span class="ml-2"><span class="fa fa-comments"></span> {{obj.article_comments.all|length}}</span> &bullet;
+                        <span class="mr-2"><span class="fa fa-eye"></span> {{obj.views}}</span>
                       </div>
                       <h2>{{obj.headline}}</h2>
                     </span>

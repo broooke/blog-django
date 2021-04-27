@@ -64,3 +64,10 @@ class Comment(models.Model):
     class Meta:
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
+
+
+class Mailing(models.Model):
+    email = models.EmailField('Адрес электронной почты', max_length=400, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.email)

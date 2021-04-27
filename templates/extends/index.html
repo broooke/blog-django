@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300, 400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/animate.css' %}">
@@ -89,14 +90,30 @@
 
           <!-- END main-content -->
           {% endblock %}
+
           <div class="col-md-12 col-lg-4 sidebar">
             <div class="sidebar-box search-form-wrap">
-              <form method="get" action="#" class="search-form">
-                <div class="input-group">
-                  <input style="padding-right: 50px;background: #f7f7f7;padding: 15px 15px;border: none;" type="text" class="form-control" id="ss" name="q" placeholder="Поиск статьи...">
-                  <button type="submit">
-                  </button>
-                </div>
+              <form method="get" action="{% url 'articles-search' %}" class="search-form">
+                <h3 class="heading">Поиск статьи</h3>
+                  <div class="input-group mb-3">
+                    <input style="padding-right: 50px;background: #f7f7f7;padding: 15px 15px;border: none;" type="text" class="form-control" id="ss" name="q" placeholder="Поиск статьи..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button style="background: #f7f7f7;padding: 15px 15px;border: none; width:50px;" type="submit" id="button-addon2"><span class="icon fa fa-search ml-2"></span></button>
+                  </div>
+              </form>
+              <form style="margin-top: 25px;" method="post" action="{% url 'mailing' %}" class="search-form">
+                {% csrf_token %}
+                <h3 class="heading">Подписаться на рассылку</h3>
+                  <div class="input-group mb-3">
+                    <input style="padding-right: 50px;background: #f7f7f7;padding: 15px 15px;border: none;" type="text" class="form-control" id="sss" name="email_sub" placeholder="Введите почту..." aria-label="Recipient's username" aria-describedby="button-addon3">
+                    <button style="background: #f7f7f7;padding: 15px 15px;border: none; width:50px;" type="submit" id="button-addon3"><span class="icon fa fa-pencil ml-2"></span></button>
+                  </div>
+                  {% if messages %}
+                        {% for message in messages %}
+                        <div role="alert" class="alert {% if message.tags == 'error' %}alert-danger{%else%}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                {% endif %}
               </form>
             </div>
             <!-- END sidebar-box -->
@@ -187,9 +204,10 @@
                         <div class="text">
                           <h4>{{art.headline}}</h4>
                           <div class="post-meta">
-                            <span class="mr-2">{{art.date}}</span> &bullet;
+                            <span class="mr-2">{{art.date}}</span>
                             <br>
-                            <span class="ml-2"><span class="fa fa-comments"></span> {{art.article_comments.all|length}}</span>
+                           <span class="ml-2"><span class="fa fa-comments"></span> {{art.article_comments.all|length}}</span> &bullet;
+                          <span class="mr-2"><span class="fa fa-eye"></span> {{art.views}}</span>
                           </div>
                         </div>
                       </a>

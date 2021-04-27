@@ -9,7 +9,7 @@
     border-bottom: 1px solid #e6e6e6;
 }
 </style>
-<section class="site-section pt-5">
+<section class="site-section">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
@@ -45,7 +45,9 @@
                   {% for tag in art.tags.all %}
                   <span class="category">{{tag.name}}</span>
                   {% endfor %}
-                  <span class="mr-2">{{art.date}} </span> &bullet;
+                  <br>
+                  <span class="mr-2">{{art.date}} </span>
+                  <br>
                   <span class="ml-2"><span class="fa fa-comments"></span> {{art.article_comments.all|length}}</span> &bullet;
                   <span class="mr-2"><span class="fa fa-eye"></span> {{art.views}}</span>
                 </div>
@@ -63,7 +65,7 @@
       <div class="container">
         <div class="row blog-entries">
           <div class="col-md-12 col-lg-8 main-content">
-            <div class="row mb-5 mt-5">
+            <div class="row mb-5">
               <div class="col-md-12">
                 <h3 class="mb-4 heading">Последние статьи</h3>
               </div>
@@ -80,7 +82,8 @@
                         {% endfor %}
                         <br>
                         <span class="mr-2">{{obj.date}} </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> {{obj.article_comments.all|length}}</span>
+                        <span class="ml-2"><span class="fa fa-comments"></span> {{obj.article_comments.all|length}}</span> &bullet;
+                        <span class="mr-2"><span class="fa fa-eye"></span> {{obj.views}}</span>
                       </div>
                       <h2>{{obj.headline}}</h2>
                     </span>
